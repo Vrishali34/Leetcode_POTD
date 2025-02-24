@@ -1,0 +1,47 @@
+import java.util.*;
+
+class Solution {
+    Map<Integer, List<Integer>> net = new HashMap<>();
+    Map<Integer, Integer> bobTrack = new HashMap<>();
+    int best = Integer.MIN_VALUE;
+
+    boolean bobDFS(int node, int t, boolean[] vis) {
+        Stack<int[]> stk = new Stack<>();
+        stk.push(new int[]{node, t});
+        while (!stk.isEmpty()) {
+            int[] top = stk.pop();
+            int n = top[0], time = top[1];
+            vis[n] = true;
+            bobTrack.put(n, time);
+            if (n == 0) return true;
+            for (int ngb : net.get(n)) if (!vis[ngb]) stk.push(new int[]{ngb, time + 1});
+            bobTrack.remove(n);
+        }
+        return false;
+    }
+
+    void aliceDFS(int node, int t, int sum, boolean[] vis, int[] amt) {
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{node, t, sum});
+        while (!q.isEmpty()) {
+            int[] top = q.poll();
+            int n = top[0], time = top[1], profit = top[2];
+            vis[n] = true;
+            profit += !bobTrack.containsKey(n) || time < bobTrack.get(n) ? amt[n] : (time == bobTrack.get(n) ? amt[n] / 2 : 0);
+            if (net.get(n).size() == 1 && n != 0) best = Math.max(best, profit);
+            for (int ngb : net.get(n)) if (!vis[ngb]) q.add(new int[]{ngb, time + 1, profit});
+        }
+    }
+
+    public int mostProfitablePath(int[][] edges, int bob, int[] amount) {
+        for (int[] e : edges) {
+            net.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);
+            net.computeIfAbsent(e[1], k -> new ArrayList<>()).add(e[0]);
+        }
+        boolean[] vis = new boolean[amount.length];
+        bobDFS(bob, 0, vis);
+        Arrays.fill(vis, false);
+        aliceDFS(0, 0, 0, vis, amount);
+        return best;
+    }
+}
