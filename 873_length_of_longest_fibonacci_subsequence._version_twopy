@@ -1,0 +1,10 @@
+class Solution(object):
+    def lenLongestFibSubseq(self, arr):
+        h, res = {n: i for i, n in enumerate(arr)}, 0
+        for u in range(len(arr)):
+            for v in range(u+1, len(arr)):
+                res = max(res, 2 + self.fn(arr, arr[u], arr[v], h))
+        return res if res > 2 else 0
+
+    def fn(self, arr, x, y, h):
+        return 1 + self.fn(arr, y, x+y, h) if x+y in h else 0
