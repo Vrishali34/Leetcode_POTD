@@ -3,6 +3,7 @@ class Solution(object):
         v_size = len(vertex)
         v_track = [0] * v_size
         
+        
         for c_val in conduit:
             # 1. Base
             v_track[0] = v_track[0] + vertex[0] * c_val
