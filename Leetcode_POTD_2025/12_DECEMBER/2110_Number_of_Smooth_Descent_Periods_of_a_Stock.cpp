@@ -1,4 +1,6 @@
 class Solution {
+
+
 public:
     long long getDescentPeriods(std::vector<int>& prices) {
         long long total_smooth_periods = 0;
