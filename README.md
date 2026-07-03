@@ -1,11 +1,17 @@
 # Leetcode_POTD
-#Leetcodedailyproblem
-#LeetCodePOTDSolutionsRepository
 
+#LeetCode #ProblemOfTheDay #LeetCodePOTD
 
-This repository contains my curated solutions to LeetCode's Problem of the Day (POTD) in 3 languages :  Java,c++ and Python organized chronologically and by question name and number for easy access. Each entry includes the LeetCode problem name and solution code, structured to track daily progress and strengthen problem solving skills across essential topics.
-
-
+This repository contains my solutions to **LeetCode Problem of the Day (POTD)** in **C++**, **Java**, and **Python**.
 
 [![Languages](https://skillicons.dev/icons?i=cpp,java,python)](#)
+
+I created this repository to keep track of the daily problems I solve and to maintain solutions in multiple languages. The problems are organized by **LeetCode problem number** and **problem title**, making them easy to revisit.
+
+The main purpose of this repository is to:
+
+* Keep a record of my daily LeetCode practice.
+* Improve problem-solving and DSA skills.
+* Practice writing clean and efficient code in different languages.
+* Revisit previously solved problems whenever needed.
 
