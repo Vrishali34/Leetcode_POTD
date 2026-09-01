@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int minMoves(vector<string>& classroom, int energy) {
+        int row_cnt = classroom.size(), col_cnt = classroom[0].size();
+        int litter_total = 0, start_row = -1, start_col = -1;
+        vector<vector<int>> litter_id(row_cnt, vector<int>(col_cnt, -1));
+
+        for (int r = 0; r < row_cnt; r++)
+            for (int c = 0; c < col_cnt; c++) {
+                if (classroom[r][c] == 'S') { start_row = r; start_col = c; }
+                else if (classroom[r][c] == 'L') litter_id[r][c] = litter_total++;
+            }
+
+        int full_mask = (1 << litter_total) - 1;
+        vector<vector<vector<int>>> best_energy(row_cnt, vector<vector<int>>(col_cnt, vector<int>(full_mask + 1, -1)));
+
+        int init_mask = 0;
+        if (litter_id[start_row][start_col] != -1) init_mask |= (1 << litter_id[start_row][start_col]);
+
+        queue<tuple<int,int,int,int>> pending_states;
+        pending_states.push({start_row, start_col, init_mask, energy});
+        best_energy[start_row][start_col][init_mask] = energy;
+
+        int dr[4] = {-1,1,0,0}, dc[4] = {0,0,-1,1};
+        int move_count = 0;
+
+        while (!pending_states.empty()) {
+            int level_size = pending_states.size();
+            for (int i = 0; i < level_size; i++) {
+                auto [cur_row, cur_col, cur_mask, cur_energy] = pending_states.front();
+                pending_states.pop();
+
+                if (cur_mask == full_mask) return move_count;
+                if (cur_energy == 0) continue;
+
+                for (int d = 0; d < 4; d++) {
+                    int next_row = cur_row + dr[d], next_col = cur_col + dc[d];
+                    if (next_row < 0 || next_row >= row_cnt || next_col < 0 || next_col >= col_cnt) continue;
+                    if (classroom[next_row][next_col] == 'X') continue;
+
+                    int next_energy = cur_energy - 1;
+                    int next_mask = cur_mask;
+                    if (litter_id[next_row][next_col] != -1) next_mask |= (1 << litter_id[next_row][next_col]);
+                    if (classroom[next_row][next_col] == 'R') next_energy = energy;
+
+                    if (next_energy > best_energy[next_row][next_col][next_mask]) {
+                        best_energy[next_row][next_col][next_mask] = next_energy;
+                        pending_states.push({next_row, next_col, next_mask, next_energy});
+                    }
+                }
+            }
+            move_count++;
+        }
+
+        return -1;
+    }
+};
