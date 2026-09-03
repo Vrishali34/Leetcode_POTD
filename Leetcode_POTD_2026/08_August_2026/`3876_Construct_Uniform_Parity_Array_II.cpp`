@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool checkTarget(vector<int>& nums1, int target_parity) {
+        int min_odd_val = INT_MAX;
+        for (int val : nums1)
+            if (val % 2 == 1) min_odd_val = min(min_odd_val, val);
+
+        for (int val : nums1) {
+            if (val % 2 == target_parity) continue;
+            if (min_odd_val < val) continue;
+            return false;
+        }
+        return true;
+    }
+
+    bool uniformArray(vector<int>& nums1) {
+        return checkTarget(nums1, 0) || checkTarget(nums1, 1);
+    }
+};
